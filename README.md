@@ -1,3 +1,4 @@
-1. New components folder
-2. Sidebar and SidebarRow components using props
-3. Styling
+1. Feed component
+2. Stories component
+3. Story component (inception style)
+4. Styling
