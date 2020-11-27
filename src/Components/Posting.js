@@ -1,30 +1,46 @@
 import React, { useState } from 'react'
 import { Avatar } from "@material-ui/core";
 import "./Posting.css"
-
+import db from '../firebase'
+import firebase from "firebase";
 import VideocamIcon from '@material-ui/icons/Videocam';
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
+import {useStateValue} from "./StateProvider";
 
 function Posting() {
 
+    const [{user}, dispatch] = useStateValue()
     const [input, setInput] = useState('')
     const [imageUrl, setImageUrl] = useState('')
 
     const handleSubmit = e => {
         e.preventDefault()                 //it prevents default behavior from happening (refreshing in our case)
+
+
+        db.collection('posts').add({
+            message: input,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            profilePic: user.photoURL,
+            username: user.displayName,
+            image: imageUrl
+        })
+
+        setInput("");
+        setImageUrl("");
     }
+
     return(
         <div className="posting">
             <div className="posting-top">
-                <Avatar />
+                <Avatar src={user.photoURL} />
                 <form>
                     <input
                         value={input}
                         onChange={e => setInput(e.target.value)}        //changing the value inside the input with the one initialized from the keyboard
                         className="posting-input"
                         type="text"
-                        placeholder={'What s on your mind?'}
+                        placeholder={`What s on your mind, ${user.displayName}?`}
                         />
                     <input
                         placeholder="image URL (Optional"

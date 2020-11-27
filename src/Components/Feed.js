@@ -1,21 +1,36 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Post from './Post'
 import Posting from "./Posting";
 import Stories from './Stories'
 import "./Feed.css"
+import db from '../firebase'
 
 function Feed () {
+    const [posts, setPosts] = useState([])
+
+
+    useEffect(() => {
+        db.collection('posts')
+            .orderBy('timestamp', 'desc')
+            .onSnapshot((snapshot) =>
+                setPosts(snapshot.docs.map((doc) => ({ id:doc.id, data:doc.data() })))
+            );
+    }, []);
+
     return(
         <div className="feed">
             <Stories/>
             <Posting/>
-            <Post
-                profilePic="https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/06/27/15/tom-sodoge-59546-0.jpg"
-                message="Nice shitposting bruh"
-                timestamp="timestamp"
-                username="Jack Lumberjack"
-                image="https://pbs.twimg.com/profile_images/1269386493409230848/YiZwmcBS.jpg"
-            />
+            {posts.map((post) => (
+                <Post
+                    key={post.id}
+                    profilePic={post.data.profilePic}
+                    message={post.data.message}
+                    timestamp={post.data.timestamp}
+                    username={post.data.username}
+                    image={post.data.image}
+                />
+            ))}
         </div>
     )
 }

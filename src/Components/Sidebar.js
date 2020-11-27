@@ -8,11 +8,13 @@ import ChatIcon from '@material-ui/icons/Chat';
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import {ExpandMoreOutlined} from '@material-ui/icons';
+import {useStateValue} from "./StateProvider";
 
 function Sidebar() {
+    const [{user}, dispatch] = useStateValue()
     return(
         <div className="sidebar">
-            <SidebarRow src="https://pickaface.net/gallery/avatar/unr_randomavatar_170412_0236_9n4c2i.png" title="Achimovici Damir"/>
+            <SidebarRow src={user.photoURL} title={user.displayName}/>
             <SidebarRow Icon={LocalHospitalIcon} title="COVID-19 Information Center"/>
             <SidebarRow Icon={EmojiFlagsIcon} title="Pages"/>
             <SidebarRow Icon={PeopleIcon} title="Friends"/>

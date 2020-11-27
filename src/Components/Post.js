@@ -16,7 +16,7 @@ function Post({ profilePic, image, username, timestamp, message }) {
                 <div className="post-topInfo">
                     <h3>{username}</h3>
                     <p>
-                        Anytime bruh
+                        Time is just a social construct
                     </p>
                 </div>
             </div>
